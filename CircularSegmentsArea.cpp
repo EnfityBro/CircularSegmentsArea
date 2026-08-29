@@ -7,10 +7,9 @@
 #include <cmath>
 #include <limits>
 #include <clocale>
-
 using namespace std;
 
-// Константа π с высокой точностью
+// Константа Пи с высокой точностью
 const double PI = 3.14159265358979323846;
 
 /*Форматирует число с двумя знаками после запятой.*/
