@@ -7,67 +7,55 @@
 #include <cmath>
 #include <limits>
 #include <clocale>
-
 using namespace std;
 
-// Константа π с высокой точностью
+// Константа числа Пи с высокой точностью
 const double PI = 3.14159265358979323846;
 
-/*Форматирует число с двумя знаками после запятой.*/
-string FormatNumber(double value)
+/*Входная точка программы. Реализует цикл главного меню и управляет переходами между режимами.*/
+int main()
 {
-    ostringstream oss;
-    oss << fixed << setprecision(2) << value;
+    // Установка локали и кодировки для корректного отображения кириллицы
+    setlocale(LC_ALL, "Russian");
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
 
-    return oss.str();
-}
+    int choice = 0;
+    bool running = true;
 
-/*
-Вычисляет параметры круга по радиусу и типу расчета.
-@param radius - радиус круга (должен быть в диапазоне [0.01, 1e6]).
-@param type - строка, определяющая тип расчета:
-            "площадь_круга" - только площадь,
-            "длина_окружности" - только длина окружности,
-            "все_параметры" - площадь, длина и диаметр.
-@return Вектор строк с результатами или сообщением об ошибке.
-*/
-vector<string> CalculateCircleParams(double radius, const string& type)
-{
-    vector<string> result;
-
-    // Проверка допустимого диапазона радиуса
-    if ((radius < 0.01) || (radius > 1e6))
+    while (running)
     {
-        result.push_back("Ошибка: радиус вне допустимого диапазона (0.01 – 1e6)");
-        return result;
+        ShowMenu();
+
+        // Обработка ввода пункта меню
+        if (!(cin >> choice))
+        {
+            cin.clear();
+            std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
+            cout << "Ошибка исходных данных, повторите ввод\n";
+            continue;
+        }
+        std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
+
+        switch (choice)
+        {
+        case 1:
+            RunExecution();
+            break;
+        case 2:
+            RunTesting();
+            break;
+        case 3:
+            cout << "\nЗавершение работы программы.\n";
+            running = false;
+            break;
+        default:
+            cout << "Ошибка исходных данных, повторите ввод\n";
+            break;
+        }
     }
 
-    // Расчет основных величин
-    double area = PI * radius * radius;
-    double circumference = 2.0 * PI * radius;
-    double diameter = 2.0 * radius;
-
-    // Формирование выходных данных в зависимости от типа расчета
-    if (type == "площадь_круга")
-    {
-        result.push_back("Площадь: " + FormatNumber(area));
-    }
-    else if (type == "длина_окружности")
-    {
-        result.push_back("Длина окружности: " + FormatNumber(circumference));
-    }
-    else if (type == "все_параметры")
-    {
-        result.push_back("Площадь: " + FormatNumber(area));
-        result.push_back("Длина окружности: " + FormatNumber(circumference));
-        result.push_back("Диаметр: " + FormatNumber(diameter));
-    }
-    else
-    {
-        result.push_back("Ошибка: неизвестный тип расчета");
-    }
-
-    return result;
+    return 0;
 }
 
 /*Отображает главное меню программы.*/
@@ -129,6 +117,65 @@ void RunExecution()
         cout << line << endl;
     }
 }
+
+/*
+Вычисляет параметры круга по радиусу и типу расчета.
+@param radius - радиус круга (должен быть в диапазоне [0.01, 1e6]).
+@param type - строка, определяющая тип расчета:
+            "площадь_круга" - только площадь,
+            "длина_окружности" - только длина окружности,
+            "все_параметры" - площадь, длина и диаметр.
+@return Вектор строк с результатами или сообщением об ошибке.
+*/
+vector<string> CalculateCircleParams(double radius, const string& type)
+{
+    vector<string> result;
+
+    // Проверка допустимого диапазона радиуса
+    if ((radius < 0.01) || (radius > 1e6))
+    {
+        result.push_back("Ошибка: радиус вне допустимого диапазона (0.01 – 1e6)");
+        return result;
+    }
+
+    // Расчет основных величин
+    double area = PI * radius * radius;
+    double circumference = 2.0 * PI * radius;
+    double diameter = 2.0 * radius;
+
+    // Формирование выходных данных в зависимости от типа расчета
+    if (type == "площадь_круга")
+    {
+        result.push_back("Площадь: " + FormatNumber(area));
+    }
+    else if (type == "длина_окружности")
+    {
+        result.push_back("Длина окружности: " + FormatNumber(circumference));
+    }
+    else if (type == "все_параметры")
+    {
+        result.push_back("Площадь: " + FormatNumber(area));
+        result.push_back("Длина окружности: " + FormatNumber(circumference));
+        result.push_back("Диаметр: " + FormatNumber(diameter));
+    }
+    else
+    {
+        result.push_back("Ошибка: неизвестный тип расчета");
+    }
+
+    return result;
+}
+
+/*Форматирует число с двумя знаками после запятой.*/
+string FormatNumber(double value)
+{
+    ostringstream oss;
+    oss << fixed << setprecision(2) << value;
+
+    return oss.str();
+}
+
+#pragma region Testing
 
 /*Структура для хранения тестового случая.*/
 struct TestCase
@@ -235,48 +282,4 @@ void RunTesting()
     cout << "========================================\n";
 }
 
-/*Входная точка программы. Реализует цикл главного меню и управляет переходами между режимами.*/
-int main()
-{
-    // Установка локали и кодировки для корректного отображения кириллицы
-    setlocale(LC_ALL, "Russian");
-    SetConsoleCP(1251);
-    SetConsoleOutputCP(1251);
-
-    int choice = 0;
-    bool running = true;
-
-    while (running)
-    {
-        ShowMenu();
-
-        // Обработка ввода пункта меню
-        if (!(cin >> choice))
-        {
-            cin.clear();
-            std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
-            cout << "Ошибка исходных данных, повторите ввод\n";
-            continue;
-        }
-        std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
-
-        switch (choice)
-        {
-        case 1:
-            RunExecution();
-            break;
-        case 2:
-            RunTesting();
-            break;
-        case 3:
-            cout << "\nЗавершение работы программы.\n";
-            running = false;
-            break;
-        default:
-            cout << "Ошибка исходных данных, повторите ввод\n";
-            break;
-        }
-    }
-
-    return 0;
-}
+#pragma endregion
