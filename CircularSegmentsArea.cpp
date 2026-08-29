@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <windows.h>
 #include <iomanip>
 #include <string>
 #include <vector>
@@ -93,15 +94,16 @@ void RunExecution()
     cout << "Введите радиус (от 0.01 до 1e6): ";
 
     // Обработка некорректного ввода радиуса
-    while (!(cin >> radius)) {
+    while (!(cin >> radius))
+    {
         cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
         cout << "Ошибка исходных данных, повторите ввод\n";
         cout << "Введите радиус (от 0.01 до 1e6): ";
     }
 
     // Очистка буфера после чтения числа
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
 
     cout << "Введите тип расчёта (площадь_круга, длина_окружности, все_параметры): ";
     getline(cin, type);
@@ -142,7 +144,8 @@ void RunTesting()
 {
     cout << "\n--- Режим автоматического тестирования ---\n\n";
 
-    vector<TestCase> tests = {
+    vector<TestCase> tests =
+    {
         // Корректные тесты из примеров задания
         {5.0, "все_параметры",
         {"Площадь: 78.54", "Длина окружности: 31.42", "Диаметр: 10.00"},
@@ -235,8 +238,10 @@ void RunTesting()
 /*Входная точка программы. Реализует цикл главного меню и управляет переходами между режимами.*/
 int main()
 {
-    // Установка локали для корректного отображения кириллицы
+    // Установка локали и кодировки для корректного отображения кириллицы
     setlocale(LC_ALL, "Russian");
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
 
     int choice = 0;
     bool running = true;
@@ -249,11 +254,11 @@ int main()
         if (!(cin >> choice))
         {
             cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
             cout << "Ошибка исходных данных, повторите ввод\n";
             continue;
         }
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
 
         switch (choice)
         {
