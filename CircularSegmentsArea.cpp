@@ -47,7 +47,7 @@ vector<string> CalculateCircleParams(double radius, const string& type)
     double circumference = 2.0 * PI * radius;
     double diameter = 2.0 * radius;
 
-    // Формирование выходных данных в зависимости от типа расчёта
+    // Формирование выходных данных в зависимости от типа расчета
     if (type == "площадь_круга")
     {
         result.push_back("Площадь: " + FormatNumber(area));
@@ -64,7 +64,7 @@ vector<string> CalculateCircleParams(double radius, const string& type)
     }
     else
     {
-        result.push_back("Ошибка: неизвестный тип расчёта");
+        result.push_back("Ошибка: неизвестный тип расчета");
     }
 
     return result;
@@ -105,7 +105,7 @@ void RunExecution()
     // Очистка буфера после чтения числа
     std::cin.ignore((std::numeric_limits<std::streamsize>::max)(), '\n');
 
-    cout << "Введите тип расчёта (площадь_круга, длина_окружности, все_параметры): ";
+    cout << "Введите тип расчета (площадь_круга, длина_окружности, все_параметры): ";
     getline(cin, type);
 
     // Удаление возможных пробелов в начале и конце
@@ -182,8 +182,8 @@ void RunTesting()
         "Радиус больше максимума"},
         
         {5.0, "неизвестный_тип",
-        {"Ошибка: неизвестный тип расчёта"},
-        "Неизвестный тип расчёта"},
+        {"Ошибка: неизвестный тип расчета"},
+        "Неизвестный тип расчета"},
         
         {-5.0, "все_параметры",
         {"Ошибка: радиус вне допустимого диапазона (0.01 – 1e6)"},
